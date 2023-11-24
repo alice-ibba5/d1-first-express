@@ -1,4 +1,5 @@
 import express from "express";
+import userRouter from "./userRouter.js";
 
 const apiRouter = express.Router();
 
@@ -32,6 +33,6 @@ apiRouter.post("/body", (req, res) => {
   res.status(200).send();
 });
 
-apiRouter.use("/users", userRouter);
+apiRouter.use("/authors", userRouter);
 
 export default apiRouter;

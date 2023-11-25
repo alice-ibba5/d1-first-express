@@ -1,9 +1,12 @@
 import express from "express";
-import userRouter from "./userRouter.js";
+import authorRouter from "./authorRouter.js";
+import cors from "cors";
 
 const apiRouter = express.Router();
 
 apiRouter.use(express.json());
+
+apiRouter.use(cors());
 
 apiRouter.get("/", (req, res) => {
   res.status(200).send(/*html*/ `
@@ -33,6 +36,6 @@ apiRouter.post("/body", (req, res) => {
   res.status(200).send();
 });
 
-apiRouter.use("/authors", userRouter);
+apiRouter.use("/authors", authorRouter);
 
 export default apiRouter;

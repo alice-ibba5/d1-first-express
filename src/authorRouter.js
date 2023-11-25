@@ -1,13 +1,13 @@
 import express from "express";
-import { Author } from "./schemas/users.js";
+import { Author } from "./schemas/authors.js";
 
-const userRouter = express.Router();
+const authorRouter = express.Router();
 
-userRouter.get("/test", async (req, res) => {
+authorRouter.get("/test", async (req, res) => {
   res.json({ message: "Users router working! 🚀" });
 });
 
-userRouter.get("/", async (req, res, next) => {
+authorRouter.get("/authors", async (req, res, next) => {
   try {
     const authors = await Author.find({});
     res.json(authors);
@@ -16,7 +16,7 @@ userRouter.get("/", async (req, res, next) => {
   }
 });
 
-userRouter.get("/:id", async (req, res, next) => {
+authorRouter.get("/authors/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const author = await Author.findById(id);
@@ -31,7 +31,7 @@ userRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-userRouter.post("/", async (req, res, next) => {
+authorRouter.post("/authors", async (req, res, next) => {
   try {
     const newAuthor = new Author(req.body);
 
@@ -44,7 +44,7 @@ userRouter.post("/", async (req, res, next) => {
   }
 });
 
-userRouter.put("/:id", async (req, res, next) => {
+authorRouter.put("/authors/:id", async (req, res, next) => {
   try {
     const updatedAuthor = await Author.findByIdAndUpdate(
       req.params.id,
@@ -59,7 +59,7 @@ userRouter.put("/:id", async (req, res, next) => {
   }
 });
 
-userRouter.delete("/:id", async (req, res, next) => {
+authorRouter.delete("/authors/:id", async (req, res, next) => {
   try {
     const deletedAuthor = await Author.findByIdAndDelete(req.params.id);
 
@@ -73,4 +73,4 @@ userRouter.delete("/:id", async (req, res, next) => {
   }
 });
 
-export default userRouter;
+export default authorRouter;

@@ -1,5 +1,6 @@
 import express from "express";
 import { BlogPost } from "./schemas/blogPosts.js";
+import { genericError } from "./middlewares/genericError.js";
 
 const blogPostRouter = express.Router();
 
@@ -7,7 +8,7 @@ blogPostRouter.get("/test", async (req, res) => {
   res.json({ message: "Users router working! 🚀" });
 });
 
-blogPostRouter.get("/blogPosts", async (req, res, next) => {
+blogPostRouter.get("/", async (req, res, next) => {
   try {
     const blogPosts = await BlogPost.find({});
     res.json(blogPosts);
@@ -16,7 +17,7 @@ blogPostRouter.get("/blogPosts", async (req, res, next) => {
   }
 });
 
-blogPostRouter.get("/blogPosts/:id", async (req, res, next) => {
+blogPostRouter.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const blogPost = await BlogPost.findById(id);
@@ -31,7 +32,7 @@ blogPostRouter.get("/blogPosts/:id", async (req, res, next) => {
   }
 });
 
-blogPostRouter.post("/blogPosts", async (req, res, next) => {
+blogPostRouter.post("/", async (req, res, next) => {
   try {
     const newBlogPost = new BlogPost(req.body);
 
@@ -44,7 +45,7 @@ blogPostRouter.post("/blogPosts", async (req, res, next) => {
   }
 });
 
-blogPostRouter.put("/blogPosts/:id", async (req, res, next) => {
+blogPostRouter.put("/:id", async (req, res, next) => {
   try {
     const updatedBlogPost = await BlogPost.findByIdAndUpdate(
       req.params.id,
@@ -59,7 +60,7 @@ blogPostRouter.put("/blogPosts/:id", async (req, res, next) => {
   }
 });
 
-blogPostRouter.delete("/blogPosts/:id", async (req, res, next) => {
+blogPostRouter.delete("/:id", async (req, res, next) => {
   try {
     const deletedBlogPost = await BlogPost.findByIdAndDelete(req.params.id);
 

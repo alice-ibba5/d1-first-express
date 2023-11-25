@@ -1,6 +1,7 @@
 import express from "express";
 import authorRouter from "./authorRouter.js";
 import cors from "cors";
+import blogPostRouter from "./blogPostRouter.js";
 
 const apiRouter = express.Router();
 
@@ -37,5 +38,6 @@ apiRouter.post("/body", (req, res) => {
 });
 
 apiRouter.use("/authors", authorRouter);
+apiRouter.use("/blogPosts", blogPostRouter);
 
 export default apiRouter;

@@ -44,4 +44,33 @@ userRouter.post("/", async (req, res, next) => {
   }
 });
 
+userRouter.put("/:id", async (req, res, next) => {
+  try {
+    const updatedAuthor = await Author.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.json(updatedAuthor);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.delete("/:id", async (req, res, next) => {
+  try {
+    const deletedAuthor = await Author.findByIdAndDelete(req.params.id);
+
+    if (!deletedAuthor) {
+      res.status(404).send();
+    } else {
+      res.status(204).send();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default userRouter;

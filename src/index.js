@@ -11,9 +11,7 @@ const port = 3000;
 server.use("/api", apiRouter);
 
 mongoose
-  .connect(
-    "mongodb+srv://aliceibba5:150988Arya@cluster0.2otrbmg.mongodb.net/Epicode"
-  )
+  .connect(process.env.MONGO_URL)
   .then(() => {
     server.listen(port, () => {
       console.log("Server listening on port: " + port);

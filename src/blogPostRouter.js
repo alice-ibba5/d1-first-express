@@ -5,7 +5,7 @@ import { genericError } from "./middlewares/genericError.js";
 const blogPostRouter = express.Router();
 
 blogPostRouter.get("/test", async (req, res) => {
-  res.json({ message: "Users router working! 🚀" });
+  res.json({ message: "Blog Posts router working! 🚀" });
 });
 
 blogPostRouter.get("/", async (req, res, next) => {

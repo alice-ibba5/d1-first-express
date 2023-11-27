@@ -13,7 +13,7 @@ const BlogPostSchema = new Schema({
     type: String,
   },
   readTime: {
-    value: {
+    valore: {
       type: Number,
       required: true,
     },

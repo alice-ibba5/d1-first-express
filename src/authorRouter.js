@@ -5,7 +5,7 @@ import { genericError } from "./middlewares/genericError.js";
 const authorRouter = express.Router();
 
 authorRouter.get("/test", async (req, res) => {
-  res.json({ message: "Users router working! 🚀" });
+  res.json({ message: "Authors router working! 🚀" });
 });
 
 authorRouter.get("/", async (req, res, next) => {

@@ -3,8 +3,11 @@ import apiRouter from "./apiRouter.js";
 import mongoose from "mongoose";
 import list from "express-list-endpoints";
 import { genericError } from "./middlewares/genericError.js";
+import cors from "cors";
 
 const server = express();
+
+server.use(cors());
 
 server.use(express.json());
 

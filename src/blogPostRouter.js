@@ -10,7 +10,7 @@ blogPostRouter.get("/test", async (req, res) => {
 
 blogPostRouter.get("/", async (req, res, next) => {
   try {
-    const blogPosts = await BlogPost.find({});
+    const blogPosts = await BlogPost.find({}).populate("author");
     res.json(blogPosts);
   } catch (error) {
     next(error);

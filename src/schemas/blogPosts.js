@@ -23,16 +23,9 @@ const BlogPostSchema = new Schema({
     },
   },
   author: {
-    _id: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-    },
-    avatar: {
-      type: String,
-    },
+    type: Schema.Types.ObjectId,
+    ref: "authors",
+    required: true,
   },
   content: {
     type: String,

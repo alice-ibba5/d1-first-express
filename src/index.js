@@ -11,7 +11,7 @@ server.use(cors());
 
 server.use(express.json());
 
-const port = 3000;
+const port = 3030;
 
 server.use("/api", apiRouter);
 

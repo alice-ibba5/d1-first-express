@@ -20,7 +20,7 @@ blogPostRouter.get("/", async (req, res, next) => {
 blogPostRouter.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const blogPost = await BlogPost.findById(id);
+    const blogPost = await BlogPost.findById(id).populate("author");
 
     if (!blogPost) {
       return res.status(404).send();

@@ -2,6 +2,7 @@ import express from "express";
 import authorRouter from "./authorRouter.js";
 import cors from "cors";
 import blogPostRouter from "./blogPostRouter.js";
+import commentRouter from "./commentRouter.js";
 
 const apiRouter = express.Router();
 
@@ -39,5 +40,6 @@ apiRouter.post("/body", (req, res) => {
 
 apiRouter.use("/authors", authorRouter);
 apiRouter.use("/blogposts", blogPostRouter);
+apiRouter.use("/blogposts/:id/comments", commentRouter);
 
 export default apiRouter;

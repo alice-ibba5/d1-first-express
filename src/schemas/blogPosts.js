@@ -11,6 +11,7 @@ const BlogPostSchema = new Schema({
   },
   cover: {
     type: String,
+    required: true,
   },
   readTime: {
     value: {

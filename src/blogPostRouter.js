@@ -1,5 +1,6 @@
 import express from "express";
 import { BlogPost } from "./schemas/blogPosts.js";
+import { Comment } from "./schemas/comments.js";
 import { genericError } from "./middlewares/genericError.js";
 
 const blogPostRouter = express.Router();
@@ -9,6 +10,7 @@ blogPostRouter.get("/test", async (req, res) => {
 });
 
 blogPostRouter.get("/", async (req, res, next) => {
+  //ritorna tutti i blog post
   try {
     const blogPosts = await BlogPost.find({}).populate("author");
     res.json(blogPosts);
@@ -18,9 +20,13 @@ blogPostRouter.get("/", async (req, res, next) => {
 });
 
 blogPostRouter.get("/:id", async (req, res, next) => {
+  //ritorna un blog post specifico
   try {
     const { id } = req.params;
-    const blogPost = await BlogPost.findById(id).populate("author");
+    const blogPost = await BlogPost.findById(id).populate(
+      "author",
+      "-_id name surname avatar"
+    );
 
     if (!blogPost) {
       return res.status(404).send();
@@ -32,7 +38,43 @@ blogPostRouter.get("/:id", async (req, res, next) => {
   }
 });
 
+blogPostRouter.get("/:id/comments", async (req, res, next) => {
+  //ritorna tutti i commenti di un blog post specifico NON FUNZIONA
+  try {
+    const blogPost = await BlogPost.findById(req.params.id)
+      .populate("comments")
+      .select("comments")
+      .exec();
+    const comments = await Comment.find({ _id: { $in: blogPost.comments } });
+
+    if (!comments) {
+      return res.status(404).send();
+    }
+    res.json(comments);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+blogPostRouter.get("/:id/comments/:commentId", async (req, res, next) => {
+  //ritorna un commento specifico di un blog post specifico FUNZIONA
+  try {
+    const { commentId } = req.params;
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      return res.status(404).send();
+    }
+
+    res.json(comment);
+  } catch (error) {
+    next(error);
+  }
+});
+
 blogPostRouter.post("/", async (req, res, next) => {
+  //aggiunge un nuovo blog post
   try {
     const newBlogPost = new BlogPost(req.body);
 
@@ -45,7 +87,22 @@ blogPostRouter.post("/", async (req, res, next) => {
   }
 });
 
+blogPostRouter.post("/:id", async (req, res, next) => {
+  //aggiunge un nuovo commento ad un post specifico FUNZIONA
+  try {
+    const newComment = new Comment(req.body);
+
+    await newComment.save();
+
+    res.status(201).json(newComment);
+  } catch (error) {
+    error.statusCode = 400;
+    next(error);
+  }
+});
+
 blogPostRouter.put("/:id", async (req, res, next) => {
+  //modifica un blog post specifico
   try {
     const updatedBlogPost = await BlogPost.findByIdAndUpdate(
       req.params.id,
@@ -60,11 +117,45 @@ blogPostRouter.put("/:id", async (req, res, next) => {
   }
 });
 
+blogPostRouter.put("/:id/comments/:commentId", async (req, res, next) => {
+  //modifica un commento ad un post specifico FUNZIONA
+  try {
+    const updatedComment = await Comment.findByIdAndUpdate(
+      req.params.commentId,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.json(updatedComment);
+  } catch (error) {
+    next(error);
+  }
+});
+
 blogPostRouter.delete("/:id", async (req, res, next) => {
+  //elimina un blog post specifico
   try {
     const deletedBlogPost = await BlogPost.findByIdAndDelete(req.params.id);
 
     if (!deletedBlogPost) {
+      res.status(404).send();
+    } else {
+      res.status(204).send();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+blogPostRouter.delete("/:id/comments/:commentId", async (req, res, next) => {
+  //elimina un commento ad un post specifico FUNZIONA
+  try {
+    const deletedComment = await Comment.findByIdAndDelete(
+      req.params.commentId
+    );
+
+    if (!deletedComment) {
       res.status(404).send();
     } else {
       res.status(204).send();

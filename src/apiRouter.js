@@ -40,6 +40,6 @@ apiRouter.post("/body", (req, res) => {
 
 apiRouter.use("/authors", authorRouter);
 apiRouter.use("/blogposts", blogPostRouter);
-apiRouter.use("/blogposts/:id/comments", commentRouter);
+//apiRouter.use("/blogposts/:id/comments", commentRouter);
 
 export default apiRouter;

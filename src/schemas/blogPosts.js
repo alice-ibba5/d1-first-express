@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { Comment } from "./comments.js";
 
 const BlogPostSchema = new Schema({
   category: {
@@ -35,11 +36,13 @@ const BlogPostSchema = new Schema({
   createdAt: {
     type: String,
   },
-  comments: {
-    type: [Schema.Types.ObjectId],
-    ref: "comments",
-    default: [],
-  },
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "comments",
+      default: [],
+    },
+  ],
 });
 
 export const BlogPost = mongoose.model("blogPosts", BlogPostSchema);

@@ -41,11 +41,13 @@ blogPostRouter.get("/:id", async (req, res, next) => {
 blogPostRouter.get("/:id/comments", async (req, res, next) => {
   //ritorna tutti i commenti di un blog post specifico NON FUNZIONA
   try {
-    const blogPost = await BlogPost.findById(req.params.id)
-      .populate("comments")
-      .select("comments")
-      .exec();
-    const comments = await Comment.find({ _id: { $in: blogPost.comments } });
+    const /*blogPost*/ comments = await BlogPost.findById(req.params.id)
+        .populate("comments")
+        .select("comments -_id")
+        .exec();
+    /*const comments = await Comment.find({
+      blogPosts: { $in: blogPost.comments },
+    });*/
 
     if (!comments) {
       return res.status(404).send();

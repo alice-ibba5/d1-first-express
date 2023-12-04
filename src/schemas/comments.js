@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { BlogPost } from "./blogPosts.js";
 
 const CommentSchema = new Schema({
   blogPost: {

@@ -2,6 +2,9 @@ import express from "express";
 import { BlogPost } from "./schemas/blogPosts.js";
 import { Comment } from "./schemas/comments.js";
 import { genericError } from "./middlewares/genericError.js";
+import cloudinaryUploader from "./confBlogpost.js";
+import { v2 as cloudinary } from "cloudinary";
+import path from "path";
 
 const blogPostRouter = express.Router();
 
@@ -41,10 +44,8 @@ blogPostRouter.get("/:id", async (req, res, next) => {
 blogPostRouter.get("/:id/comments", async (req, res, next) => {
   //ritorna tutti i commenti di un blog post specifico NON FUNZIONA
   try {
-    const /*blogPost*/ comments = await BlogPost.findById(req.params.id)
-        .populate("comments")
-        .select("comments -_id")
-        .exec();
+    const comments = await Comment.find({ blogPost: req.params.id });
+
     /*const comments = await Comment.find({
       blogPosts: { $in: blogPost.comments },
     });*/
@@ -166,5 +167,28 @@ blogPostRouter.delete("/:id/comments/:commentId", async (req, res, next) => {
     next(error);
   }
 });
+
+cloudinary.config({
+  URL: process.env.CLOUDINARY_URL,
+});
+
+blogPostRouter.patch(
+  "/:id/cover",
+  cloudinaryUploader,
+  async (req, res, next) => {
+    //aggiunge la cover ad un blog post specifico
+    try {
+      console.log(req.file);
+      let updatedCover = await BlogPost.findByIdAndUpdate(
+        req.params.id,
+        { cover: req.file.path },
+        { new: true }
+      );
+      res.send(updatedCover);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default blogPostRouter;

@@ -3,6 +3,10 @@ import authorRouter from "./authorRouter.js";
 import cors from "cors";
 import blogPostRouter from "./blogPostRouter.js";
 import commentRouter from "./commentRouter.js";
+import path from "path";
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
 const apiRouter = express.Router();
 
@@ -37,6 +41,24 @@ apiRouter.post("/body", (req, res) => {
 
   res.status(200).send();
 });
+
+/*const cloudinaryStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "epicode-folder-test",
+  },
+});
+
+const upload = multer({ storage: cloudinaryStorage });
+
+apiRouter.patch("/upload", upload.single("avatar"), (req, res, next) => {
+  // qui dentro avremo bisogno di salvare il percorso del file dentro al nostro
+  // database, in modo da poter recuperare il nostro file quando ne avremo bisogno
+
+  // req.file contiene le informazioni del file caricato
+  console.log(req.file.path)
+  res.send({ url: req.file.path })
+})*/
 
 apiRouter.use("/authors", authorRouter);
 apiRouter.use("/blogposts", blogPostRouter);

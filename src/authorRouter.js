@@ -1,6 +1,9 @@
 import express from "express";
 import { Author } from "./schemas/authors.js";
 import { genericError } from "./middlewares/genericError.js";
+import cloudinaryUploader from "./confAuthor.js";
+import { v2 as cloudinary } from "cloudinary";
+import path from "path";
 
 const authorRouter = express.Router();
 
@@ -9,6 +12,7 @@ authorRouter.get("/test", async (req, res) => {
 });
 
 authorRouter.get("/", async (req, res, next) => {
+  //ritorna tutti gli autori
   try {
     const authors = await Author.find({});
     res.json(authors);
@@ -18,6 +22,7 @@ authorRouter.get("/", async (req, res, next) => {
 });
 
 authorRouter.get("/:id", async (req, res, next) => {
+  //ritorna un autore specifico
   try {
     const { id } = req.params;
     const author = await Author.findById(id);
@@ -33,6 +38,7 @@ authorRouter.get("/:id", async (req, res, next) => {
 });
 
 authorRouter.post("/", async (req, res, next) => {
+  //aggiunge un autore specifico
   try {
     const newAuthor = new Author(req.body);
 
@@ -46,6 +52,7 @@ authorRouter.post("/", async (req, res, next) => {
 });
 
 authorRouter.put("/:id", async (req, res, next) => {
+  //modifica un autore specifico
   try {
     const updatedAuthor = await Author.findByIdAndUpdate(
       req.params.id,
@@ -61,6 +68,7 @@ authorRouter.put("/:id", async (req, res, next) => {
 });
 
 authorRouter.delete("/:id", async (req, res, next) => {
+  //cancella un autore specifico
   try {
     const deletedAuthor = await Author.findByIdAndDelete(req.params.id);
 
@@ -73,5 +81,28 @@ authorRouter.delete("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
+cloudinary.config({
+  URL: process.env.CLOUDINARY_URL,
+});
+
+authorRouter.patch(
+  "/:id/avatar",
+  cloudinaryUploader,
+  async (req, res, next) => {
+    //aggiunge l'avatar di un autore specifico
+    try {
+      console.log(req.file);
+      let updatedAvatar = await Author.findByIdAndUpdate(
+        req.params.id,
+        { avatar: req.file.path },
+        { new: true }
+      );
+      res.send(updatedAvatar);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default authorRouter;

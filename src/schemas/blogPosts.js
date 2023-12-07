@@ -10,10 +10,7 @@ const BlogPostSchema = new Schema({
     type: String,
     required: true,
   },
-  cover: {
-    type: String,
-    required: true,
-  },
+
   readTime: {
     value: {
       type: Number,
@@ -34,6 +31,9 @@ const BlogPostSchema = new Schema({
     required: true,
   },
   createdAt: {
+    type: String,
+  },
+  cover: {
     type: String,
   },
 });

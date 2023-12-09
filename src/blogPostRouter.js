@@ -1,6 +1,6 @@
 import express from "express";
-import { BlogPost } from "./schemas/blogPosts.js";
-import { Comment } from "./schemas/comments.js";
+import { BlogPost } from "./models/blogPosts.js";
+import { Comment } from "./models/comments.js";
 import { genericError } from "./middlewares/genericError.js";
 import uploadFile from "./confBlogpost.js";
 import path from "path";
@@ -43,7 +43,10 @@ blogPostRouter.get("/:id", async (req, res, next) => {
 blogPostRouter.get("/:id/comments", async (req, res, next) => {
   //ritorna tutti i commenti di un blog post specifico FUNZIONA
   try {
-    const comments = await Comment.find({ blogPost: req.params.id });
+    const comments = await Comment.find({ blogPost: req.params.id }).populate(
+      "author",
+      "-_id name surname avatar"
+    );
 
     if (!comments) {
       return res.status(404).send();
@@ -59,7 +62,10 @@ blogPostRouter.get("/:id/comments/:commentId", async (req, res, next) => {
   //ritorna un commento specifico di un blog post specifico FUNZIONA
   try {
     const { commentId } = req.params;
-    const comment = await Comment.findById(commentId);
+    const comment = await Comment.findById(commentId).populate(
+      "author",
+      "-_id name surname avatar"
+    );
 
     if (!comment) {
       return res.status(404).send();

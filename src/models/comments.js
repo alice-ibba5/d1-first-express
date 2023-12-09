@@ -11,8 +11,9 @@ const CommentSchema = new Schema({
     type: String,
     required: true,
   },
-  user: {
-    type: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "authors",
     required: true,
   },
 });

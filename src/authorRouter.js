@@ -1,5 +1,5 @@
 import express from "express";
-import { Author } from "./schemas/authors.js";
+import { Author } from "./models/authors.js";
 import { genericError } from "./middlewares/genericError.js";
 import cloudinaryUploader from "./confAuthor.js";
 import { v2 as cloudinary } from "cloudinary";

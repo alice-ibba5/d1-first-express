@@ -4,6 +4,7 @@ import { genericError } from "./middlewares/genericError.js";
 import cloudinaryUploader from "./confAuthor.js";
 import { v2 as cloudinary } from "cloudinary";
 import path from "path";
+import bcrypt from "bcrypt";
 
 const authorRouter = express.Router();
 
@@ -39,11 +40,12 @@ authorRouter.get("/:id", async (req, res, next) => {
 
 authorRouter.post("/", async (req, res, next) => {
   //aggiunge un autore specifico
+  const password = await bcrypt.hash(req.body.password, 10);
   try {
-    const newAuthor = new Author(req.body);
-
-    await newAuthor.save();
-
+    const newAuthor = await Author.create({
+      ...req.body,
+      password,
+    });
     res.status(201).json(newAuthor);
   } catch (error) {
     error.statusCode = 400;

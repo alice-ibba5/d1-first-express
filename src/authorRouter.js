@@ -25,7 +25,7 @@ authorRouter.get("/", async (req, res, next) => {
 });
 
 authorRouter.get("/:id", checkJwt, async (req, res, next) => {
-  //ritorna un autore specifico
+  //ritorna un autore specifico autenticato
   /* try {
     const { id } = req.params;
     const author = await Author.findById(id);
@@ -35,7 +35,23 @@ authorRouter.get("/:id", checkJwt, async (req, res, next) => {
     }*/
 
   res.status(200).json(req.author);
-  /*} catch (error) */ {
+  /*} catch (error)  {
+    next(error);
+  }*/
+});
+
+authorRouter.get("/:id", async (req, res, next) => {
+  //ritorna un autore specifico
+  try {
+    const { id } = req.params;
+    const author = await Author.findById(id);
+
+    if (!author) {
+      return res.status(404).send();
+    }
+
+    res.status(200).json(author);
+  } catch (error) {
     next(error);
   }
 });

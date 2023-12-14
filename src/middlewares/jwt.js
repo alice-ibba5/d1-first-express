@@ -10,9 +10,8 @@ const checkJwt = async (req, res, next) => {
 
     if (!req.author) {
       return res.status(404).json({ message: "Author not found" });
-    } else if (req.author) {
-      next();
     }
+    next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
   }

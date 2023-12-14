@@ -7,6 +7,7 @@ import path from "path";
 import bcrypt from "bcrypt";
 import checkJwt from "./middlewares/jwt.js";
 import jwt from "jsonwebtoken";
+import passport from "passport";
 
 const authorRouter = express.Router();
 
@@ -24,7 +25,7 @@ authorRouter.get("/", async (req, res, next) => {
   }
 });
 
-authorRouter.get("/:id", checkJwt, async (req, res, next) => {
+authorRouter.get("/:id", checkJwt, async (req, res) => {
   //ritorna un autore specifico autenticato
   /* try {
     const { id } = req.params;
@@ -38,22 +39,6 @@ authorRouter.get("/:id", checkJwt, async (req, res, next) => {
   /*} catch (error)  {
     next(error);
   }*/
-});
-
-authorRouter.get("/:id", async (req, res, next) => {
-  //ritorna un autore specifico
-  try {
-    const { id } = req.params;
-    const author = await Author.findById(id);
-
-    if (!author) {
-      return res.status(404).send();
-    }
-
-    res.status(200).json(author);
-  } catch (error) {
-    next(error);
-  }
 });
 
 authorRouter.post("/", async (req, res, next) => {
@@ -101,6 +86,36 @@ authorRouter.post("/session", async (req, res, next) => {
 
   res.status(200).json({ authorId: author._id, token });
 });
+
+authorRouter.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account",
+  })
+);
+
+authorRouter.get(
+  "/google-callback",
+  passport.authenticate("google", {
+    failureRedirect: "/",
+    session: false,
+  }),
+  async (req, res) => {
+    const payload = { id: req.author.id };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.redirect(
+      `http://localhost:3030?token=${token}&authorId=${req.author._id}`
+    );
+  }
+);
+
+authorRouter.delete("/session", async (req, res) => {});
+// Logout
 
 authorRouter.put("/:id", async (req, res, next) => {
   //modifica un autore specifico

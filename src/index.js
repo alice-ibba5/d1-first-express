@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import list from "express-list-endpoints";
 import { genericError } from "./middlewares/genericError.js";
 import cors from "cors";
+import passport from "passport";
+import googleStrategy from "./middlewares/google.js";
 
 const server = express();
 
@@ -12,6 +14,8 @@ server.use(cors());
 server.use(express.json());
 
 const port = 3030;
+
+passport.use(googleStrategy);
 
 server.use("/api", apiRouter);
 

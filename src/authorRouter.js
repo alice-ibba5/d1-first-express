@@ -11,6 +11,31 @@ import passport from "passport";
 
 const authorRouter = express.Router();
 
+authorRouter.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account",
+  })
+);
+
+authorRouter.get(
+  "/google-callback",
+  passport.authenticate("google", {
+    failureRedirect: "/",
+    session: false,
+  }),
+  async (req, res) => {
+    const payload = { id: req.user.id };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.redirect(`http://localhost:3000?token=${token}&userId=${req.user.id}`);
+  }
+);
+
 authorRouter.get("/test", async (req, res) => {
   res.json({ message: "Authors router working! 🚀" });
 });
@@ -86,33 +111,6 @@ authorRouter.post("/session", async (req, res, next) => {
 
   res.status(200).json({ authorId: author._id, token });
 });
-
-authorRouter.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-    prompt: "select_account",
-  })
-);
-
-authorRouter.get(
-  "/google-callback",
-  passport.authenticate("google", {
-    failureRedirect: "/",
-    session: false,
-  }),
-  async (req, res) => {
-    const payload = { id: req.author.id };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    res.redirect(
-      `http://localhost:3030?token=${token}&authorId=${req.author._id}`
-    );
-  }
-);
 
 authorRouter.delete("/session", async (req, res) => {});
 // Logout

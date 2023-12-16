@@ -7,7 +7,6 @@ const AuthorSchema = new Schema({
   },
   surname: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -21,7 +20,6 @@ const AuthorSchema = new Schema({
   },
   dateOfBirth: {
     type: String,
-    required: true,
   },
   avatar: {
     type: String,

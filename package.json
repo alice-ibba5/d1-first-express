@@ -13,7 +13,9 @@
   "author": "alice-ibba5",
   "license": "ISC",
   "dependencies": {
+    "20": "^3.1.9",
     "@getbrevo/brevo": "^2.0.0-beta.4",
+    "@tsconfig/node20": "^20.1.2",
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.0",
     "cors": "^2.8.5",

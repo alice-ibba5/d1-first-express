@@ -23,6 +23,7 @@ const AuthorSchema = new Schema({
   },
   avatar: {
     type: String,
+    required: true,
   },
   googleId: {
     type: String,

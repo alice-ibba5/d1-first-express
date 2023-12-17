@@ -2,6 +2,7 @@ import express from "express";
 import authorRouter from "./authorRouter.js";
 import cors from "cors";
 import blogPostRouter from "./blogPostRouter.js";
+import emailRouter from "./emailRouter.js";
 import commentRouter from "./commentRouter.js";
 import path from "path";
 import multer from "multer";
@@ -62,6 +63,7 @@ apiRouter.patch("/upload", upload.single("avatar"), (req, res, next) => {
 
 apiRouter.use("/authors", authorRouter);
 apiRouter.use("/blogposts", blogPostRouter);
+apiRouter.use("/verifyEmail", emailRouter);
 //apiRouter.use("/blogposts/:id/comments", commentRouter);
 
 export default apiRouter;

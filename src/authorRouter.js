@@ -115,6 +115,21 @@ authorRouter.post("/session", async (req, res, next) => {
 authorRouter.delete("/session", async (req, res) => {});
 // Logout
 
+authorRouter.post("/checkUserExistence", async (req, res) => {
+  try {
+    const { authorEmail } = req.body;
+
+    // Cerca l'utente nel database usando il campo email
+    const existingUser = await Author.findOne({ email: authorEmail });
+
+    // Invia la risposta al client indicando se l'utente esiste o meno
+    res.json({ userExists: !!existingUser });
+  } catch (error) {
+    console.error("Error checking user existence:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 authorRouter.put("/:id", async (req, res, next) => {
   //modifica un autore specifico
   try {

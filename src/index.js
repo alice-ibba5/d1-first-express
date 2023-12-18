@@ -17,11 +17,11 @@ const whitelist = [
   "https://strive-blog-backend.onrender.com/api/authors/google",
 ];
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
+  origin: function (origin, next) {
+    if (whitelist.includes(origin) || !origin) {
+      next(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      next(new Error("Not allowed by CORS"));
     }
   },
 };

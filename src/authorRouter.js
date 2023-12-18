@@ -33,7 +33,7 @@ authorRouter.get(
     });
 
     res.redirect(
-      `${process.env.REACT_APP_BACKEND_ENDPOINT}?token=${token}&userId=${req.user.id}`
+      `https://strive-blog-ai.netlify.app/?token=${token}&userId=${req.user.id}`
     );
   }
 );

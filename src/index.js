@@ -12,7 +12,7 @@ const server = express();
 const whitelist = [
   "https://strive-blog-ai.netlify.app",
   "http://localhost:3000",
-  "'https://accounts.google",
+  "https://accounts.google.com",
 ];
 const corsOptions = {
   origin: function (origin, callback) {

@@ -12,6 +12,7 @@ const server = express();
 const whitelist = [
   "https://strive-blog-ai.netlify.app",
   "http://localhost:3000",
+  "http://localhost:3030",
   "https://accounts.google.com/o/oauth2/auth",
   "https://strive-blog-backend.onrender.com/api/authors/google",
 ];

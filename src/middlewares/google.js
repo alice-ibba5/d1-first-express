@@ -5,7 +5,7 @@ const googleStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3030/api/authors/google-callback",
+    callbackURL: "https://strive-blog-backend.onrender.com/authors/google-callback",
   },
   async function (_, __, profile, cb) {
     console.log(profile);

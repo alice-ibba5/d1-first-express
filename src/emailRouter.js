@@ -13,17 +13,18 @@ emailRouter.post("/", async (req, res) => {
   try {
     const { authorEmail } = req.body;
 
-    let sendSmtpEmail = new brevo.SendSmtpEmail();
-    sendSmtpEmail.subject = "{{params.subject}}";
+    const author = await Author.findOne({ email: authorEmail });
 
-    sendSmtpEmail.htmlContent =
-      "<html><body><h1>{{params.subject}}</h1></body></html>";
+    let sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.subject = "Email di benvenuto";
+
+    sendSmtpEmail.htmlContent = `<html><body><h1>Email di benvenuto a ${author.name} ${author.surname}</h1></body></html>`;
     sendSmtpEmail.sender = {
       name: "Strive Blog",
       email: "strive.blog@gmail.com",
     };
     sendSmtpEmail.to = [
-      { email: authorEmail, name: (Author.name, Author.surname) },
+      { email: authorEmail, name: `${author.name} ${author.surname}` },
     ];
     sendSmtpEmail.replyTo = {
       name: "Alice",

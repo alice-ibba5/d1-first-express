@@ -32,7 +32,9 @@ authorRouter.get(
       expiresIn: "1h",
     });
 
-    res.redirect(`https://strive-blog-ai.netlify.app`);
+    res.redirect(
+      `https://strive-blog-ai.netlify.app/?token=${token}&userId=${req.user.id}`
+    );
   }
 );
 

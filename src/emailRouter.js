@@ -15,6 +15,10 @@ emailRouter.post("/", async (req, res) => {
 
     const author = await Author.findOne({ email: authorEmail });
 
+    if (!author) {
+      return res.status(404).send("Author not found for the given email");
+    }
+
     let sendSmtpEmail = new brevo.SendSmtpEmail();
     sendSmtpEmail.subject = "Email di benvenuto";
 

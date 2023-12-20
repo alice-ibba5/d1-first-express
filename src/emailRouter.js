@@ -47,7 +47,7 @@ emailRouter.post("/", async (req, res) => {
     res.send(data);
   } catch (error) {
     console.error("Error sending welcome email:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Error sending welcome email: " + error.message);
   }
 });
 export default emailRouter;

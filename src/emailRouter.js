@@ -11,9 +11,9 @@ apiKey.apiKey = process.env.BREVO_API_KEY;
 
 emailRouter.post("/", async (req, res) => {
   try {
-    const { authorEmail } = req.body;
+    const { email } = req.body;
 
-    const author = await Author.findOne({ email: authorEmail });
+    const author = await Author.findOne({ email });
 
     if (!author) {
       return res.status(404).send("Author not found for the given email");
@@ -28,7 +28,7 @@ emailRouter.post("/", async (req, res) => {
       email: "strive.blog@gmail.com",
     };
     sendSmtpEmail.to = [
-      { email: authorEmail, name: `${author.name} ${author.surname}` },
+      { email: email, name: `${author.name} ${author.surname}` },
     ];
     sendSmtpEmail.replyTo = {
       name: "Alice",
